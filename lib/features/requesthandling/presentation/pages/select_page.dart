@@ -5,48 +5,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
 import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
 import 'package:help_giver/features/requesthandling/presentation/bloc/request_bloc.dart';
-import 'package:help_giver/features/requesthandling/presentation/pages/request_form.dart';
 
-class HomePage extends StatelessWidget {
+class SelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authenticationBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
     final RequestBloc requestBloc =
         BlocProvider.of<RequestBloc>(context);
 
-  @override
-  void initState() {
-    requestBloc = RequestBloc();
-    requestBloc.dispatch(NoRequests());
-    super.initState();
-  }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('NoRequests'),
       ),
       body: Container(
-        child: buildCenter(authenticationBloc, requestBloc),
+        child: buildCenter(requestBloc),
       ),
     );
   }
 
-  Center buildCenter(AuthenticationBloc authenticationBloc, RequestBloc requestBloc) {
+  Center buildCenter(RequestBloc requestBloc) {
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset('assets/help_giver_suggested_logo.png'),
-            RequestForm(
-              requestBloc: requestBloc,
+            RaisedButton(
+              child: Text('All requests'),
+              onPressed: () {
+                requestBloc.dispatch(AllRequests());
+              },
             ),
             RaisedButton(
-              child: Text('logout '+ authenticationBloc.userRepository.username1.toString()),
+              child: Text('My requests'),
               onPressed: () {
-                authenticationBloc.dispatch(LoggedOut());
-            },
-        )
+                requestBloc.dispatch(MyRequests());
+              },
+            ),
+            RaisedButton(
+              child: Text('Make a request'),
+              onPressed: () {
+                requestBloc.dispatch(MakeRequest());
+              },
+            ),
           ],
         ),
     );

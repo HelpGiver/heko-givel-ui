@@ -2,38 +2,49 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
+import '../../domain/entities/request.dart';
 import 'package:help_giver/core/error/exceptions.dart';
 import 'package:help_giver/features/requesthandling/data/models/request_model.dart';
 
 abstract class RequestRemoteDataSource {
-  /// Throws a [ServerExcception] for all error codes.
-  Future<RequestModel> askRequest(int number);
+  
+  /// Throw [CacheException] if no cached is present.
+  Future<Request> askRequest(Request request);
 
   /// Throws a [ServerExcception] for all error codes.
-  Future<RequestModel> takeonRequest();
+  Future<Request> listAllRequests(String userId);
+  
+  /// Throws a [ServerExcception] for all error codes.
+  Future<Request> listRequests(String userId, String status);
+
 }
 
-class NumberTriviaRemoteDataSourceImp implements NumberTriviaRemoteDataSource {
+class RequestRemoteDataSourceImp implements RequestRemoteDataSource {
   final http.Client client;
 
-  NumberTriviaRemoteDataSourceImp({@required this.client});
+  RequestRemoteDataSourceImp({@required this.client});
 
   @override
-  Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
-    return await _getTriviaFromUrl(number.toString());
+  Future<Request> askRequest(Request request) async {
+    //return await _askRequest(request);
   }
 
   @override
-  Future<NumberTriviaModel> getRandomNumberTrivia() async {
-    return await _getTriviaFromUrl('random');
+  Future<Request> listAllRequests(String userId) async {
+    return await _listRequests(userId, "all");
   }
 
-  Future<NumberTriviaModel> _getTriviaFromUrl(String url) async {
-    final response = await client.get('http://numbersapi.com/$url',
+    @override
+  Future<Request> listRequests(String userId, String status) async {
+    return await _listRequests(userId, status);
+  }
+
+  Future<Request> _listRequests(String url, String status) async {
+    final response = await client.get('http://$url',
         headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      return NumberTriviaModel.fromJson(json.decode(response.body));
+      return null;//RequestModel.fromJson(json.decode(response.body));
     } else
       throw ServerException();
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:help_giver/core/error/exceptions.dart';
 
+import '../../domain/entities/request.dart';
 import '../models/request_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meta/meta.dart';
@@ -10,33 +11,57 @@ abstract class RequestLocalSource {
   /// Gets the cached [NumberTriviModel] which was gotten the last time the user had an internet connection.
   ///
   /// Throw [CacheException] if no cached is present.
-  Future<RequestModel> askRequest();
+  Future<RequestModel> askRequest(Request request);
 
-  Future<void> cacheRequest(RequestModel request);
+  /// Throws a [ServerExcception] for all error codes.
+  Future<RequestModel> listAllRequests(String userId);
+  
+  /// Throws a [ServerExcception] for all error codes.
+  Future<RequestModel> listRequests(String userId, String status);
+  
+  Future<void> cacheRequest(RequestModel requestToCache);
 }
-
-const CACHED_NUMBER_TRIVIA = 'CACHED_NUMBER_TRIVIA';
 
 class RequestLocalDataSourceImpl implements RequestLocalSource {
   final SharedPreferences sharedPreferences;
 
-  NumberTriviaLocalDataSourceImpl({@required this.sharedPreferences});
+  RequestLocalDataSourceImpl({@required this.sharedPreferences});
 
   @override
-  Future<NumberTriviaModel> getLastNumberTrivia() {
-    final jsonString = sharedPreferences.getString(CACHED_NUMBER_TRIVIA);
+  Future<RequestModel> askRequest(Request request) {
+    final jsonString = sharedPreferences.getString("");
     if (jsonString != null) {
-      return Future.value(NumberTriviaModel.fromJson(json.decode(jsonString)));
+      return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
+    } else
+      throw CacheException();
+  }
+
+  
+  @override
+  Future<RequestModel> listAllRequests(String userId) {
+    final jsonString = sharedPreferences.getString("");
+    if (jsonString != null) {
+      return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
+    } else
+      throw CacheException();
+  }
+
+  
+  @override
+  Future<RequestModel> listRequests(String userId, String status) {
+    final jsonString = sharedPreferences.getString("");
+    if (jsonString != null) {
+      return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
     } else
       throw CacheException();
   }
 
   @override
-  Future<void> cacheNumberTrivia(NumberTriviaModel triviaToCache) {
-    return sharedPreferences.setString(
-        CACHED_NUMBER_TRIVIA,
-        json.encode(
-          triviaToCache.toJson(),
-        ));
+  Future<void> cacheRequest(RequestModel requestToCache) {
+    return null;//sharedPreferences.setString(
+        // "CACHED_REQUEST",
+        // json.encode(
+        //   requestToCache.toJson(),
+        // ));
   }
 }

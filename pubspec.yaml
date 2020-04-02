@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
 
   flutter_bloc: ^0.6.3
+  #service locator
+  get_it: ^2.0.1
     #value equality
   equatable: ^0.4.0
   #Functional programming thingies
@@ -30,6 +32,9 @@ dependencies:
   cupertino_icons: ^0.1.2
     #check if we got internet connection
   data_connection_checker: ^0.3.4
+  http: ^0.12.0+2
+  #local cache
+  shared_preferences: ^0.5.3+4
 
 dev_dependencies:
   flutter_test:

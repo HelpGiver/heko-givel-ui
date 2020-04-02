@@ -3,10 +3,10 @@ import 'package:meta/meta.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/number_trivia.dart';
-import '../../domain/irepositories/number_trivia_repository.dart';
-import '../datasources/number_trivia_local_data_source.dart';
-import '../datasources/number_trivia_remote_remote_data_source.dart';
+import '../../domain/entities/request.dart';
+import '../../domain/irepositories/requesthandling_repo.dart';
+import '../datasources/request_local_data_source.dart';
+import '../datasources/request_remote_data_source.dart';
 
 typedef Future<Request> _ConcreteOrRandomChooser();
 
@@ -20,41 +20,60 @@ class RequestRepositoryImplementation implements RequestRepository {
       @required this.localDataSource,
       @required this.networkInfo});
 
+// SHOULD CHECK CACHE FIRST IN ALL BELOW
+
   @override
   Future<Either<Failure, Request>> askRequest(
-    int number,
+    Request request,
   ) async {
-    //higher order of function
-    return await _getTrivia(() {
-      return remoteDataSource.askRequest(number);
-    });
-  }
-
-  @override
-  Future<Either<Failure, Request>> takeonRequest() async {
-    //higher order of function
-    return await _getTrivia(() {
-      return remoteDataSource.takeonRequest();
-    });
-  }
-
-Future<Either<Failure, Request>> _askRequest(
-) async{
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteTrivia = await getConcreteOrRandom();
-        localDataSource.cacheNumberTrivia(remoteTrivia);
-        return Right(remoteTrivia);
+    try {
+        remoteDataSource.askRequest(request);
+        return Right(request);
       } on ServerException {
         return Left(ServerFailure());
       }
-    } else {
+  }
+
+  @override
+  Future<Either<Failure, Request>> listAllRequests(String userId) async {
+    //higher order of function
       try {
-        final localTrivia = await localDataSource.getLastNumberTrivia();
-        return Right(localTrivia);
-      } on CacheException {
-        return Left(CacheFailure());
+        remoteDataSource.listAllRequests(userId);
+        // "Should return request here from requestModel"
+        return Right(null);
+      } on ServerException {
+        return Left(ServerFailure());
       }
-    }
- }
+  }
+
+    @override
+  Future<Either<Failure, Request>> listRequests(String userId, String status) async {
+    //higher order of function
+      try {
+        remoteDataSource.listRequests(userId, status);
+        // "Should return request here from requestModel"
+        return Right(null);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+  }
+
+// Future<Either<Failure, Request>> _askRequest(
+// ) async{
+//     if (await networkInfo.isConnected) {
+//       try {
+//         localDataSource.cacheRequest(remoteRequest);
+//         return Right(remoteRequest);
+//       } on ServerException {
+//         return Left(ServerFailure());
+//       }
+//     } else {
+//       try {
+//         final localRequest = await localDataSource.getRequest();
+//         return Right(localRequest);
+//       } on CacheException {
+//         return Left(CacheFailure());
+//       }
+//     }
+//  }
 }

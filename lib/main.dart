@@ -16,6 +16,8 @@ import 'package:help_giver/features/userhandling/presentation/widgets/loading_in
 import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
 import 'package:help_giver/features/userhandling/domain/entities/authentication_entity.dart';
 
+import 'package:help_giver/features/requesthandling/domain/irepositories/requesthandling_repo.dart';
+
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -67,7 +69,7 @@ class _AppState extends State<App> {
               return SplashPage();
             }
             if (state is AuthenticationAuthenticated) {
-              return HomePage();
+              return HomePage(requestRepository: RequestRepository());
             }
             if (state is AuthenticationUnauthenticated) {
               return LoginPage(userRepository: userRepository);

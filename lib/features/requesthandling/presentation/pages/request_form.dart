@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:help_giver/features/requesthandling/presentation/bloc/request_bloc.dart';
+import 'package:help_giver/features/requesthandling/presentation/pages/select_page.dart';
+import 'package:help_giver/features/requesthandling/domain/usecases/request_usecase.dart';
+import 'package:help_giver/features/requesthandling/domain/entities/request_state.dart';
+
+
+class RequestForm extends StatefulWidget {
+  final RequestBloc requestBloc;
+
+  RequestForm({
+    Key key,
+    @required this.requestBloc,
+  }) : super(key: key);
+
+  @override
+  State<RequestForm> createState() => _RequestState();
+}
+
+class _RequestState extends State<RequestForm> {
+
+  RequestBloc get _requestBloc => widget.requestBloc;
+
+  @override
+  void dispose() {
+    _requestBloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<RequestBloc>(
+      bloc: _requestBloc,
+      child: MaterialApp(
+        home: BlocBuilder<RequestEvent, RequestState>(
+          bloc: _requestBloc,
+          builder: (BuildContext context, RequestState state) {
+            if (state is NoRequests) {
+              return SelectPage();
+            }
+            if (state is AllRequests) {
+              return AllRequestsPage();
+            }
+            if (state is MyRequests) {
+              return MyRequestsPage();
+            }
+            if (state is MakeRequest) {
+              return MakeRequestPage();
+            }
+            if (state is RequestLoading) {
+              return LoadingIndicator();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
