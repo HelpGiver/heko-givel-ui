@@ -1,29 +1,28 @@
 
 import 'package:meta/meta.dart';
+import 'package:help_giver/features/userhandling/domain/entities/user.dart';
 
 class UserRepository {
   String username1;
 
   Future<String> authenticate({
-    @required String username,
-    @required String password,
+    @required User user,
   }) async {
     await Future.delayed(Duration(seconds: 1));
-    if (username != "richard" && password != "1") {
+    if (user.userName != "richard" && user.password != "1") {
+      username1 = user.userName;
       throw 'Error login';
     } else {
-      username1 = username;
       return 'token';
     }
   }
 
   Future<String> register({
-    @required String username,
-    @required String password,
-    @required String mobileNumber,
+    @required User user,
   }) async {
     await Future.delayed(Duration(seconds: 1));
-    if (username != "richard" && password != "1" && mobileNumber != "007" ) {
+    if (user.userName != "richard" && user.password != "1" 
+      && user.mobileNumber != "007"  && user.address != "street" ) {
       print("Register error");
       throw 'Error register';
     } else {

@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:help_giver/features/userhandling/data/repositories/userhandling_repo.dart';
 import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
-
 import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
 import 'package:help_giver/features/userhandling/domain/entities/login_entity.dart';
 import 'package:help_giver/features/userhandling/domain/usecases/login_usecase.dart';
@@ -32,8 +31,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         final token = await userRepository.authenticate(
-          username: event.username,
-          password: event.password,
+          user: event.user
         );
         
         authenticationBloc.dispatch(LoggedIn(token: token));

@@ -32,12 +32,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
       try {
         final token = await userRepository.register(
-          username: event.username,
-          password: event.password,
-          mobileNumber: event.mobileNumber,
+          user: event.user,
         );
 
-        authenticationBloc.dispatch(LoggedOut());
+        authenticationBloc.dispatch(Registered(token: token));
         yield RegisterInitial();
       } catch (error) {
         yield RegisterFailure(error: error.toString());

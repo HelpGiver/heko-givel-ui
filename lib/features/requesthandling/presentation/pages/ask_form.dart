@@ -2,40 +2,32 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
-import 'package:help_giver/features/userhandling/presentation/bloc/login_bloc.dart';
-import 'package:help_giver/features/userhandling/domain/entities/login_entity.dart';
-import 'package:help_giver/features/userhandling/domain/usecases/login_usecase.dart';
-import 'package:help_giver/features/userhandling/domain/entities/user.dart';
 
+class AskForm extends StatefulWidget {
+  final AskBloc askBloc;
 
-class LoginForm extends StatefulWidget {
-  final LoginBloc loginBloc;
-  final AuthenticationBloc authenticationBloc; 
-
-  LoginForm({
+  AskForm({
     Key key,
-    @required this.loginBloc,
-    @required this.authenticationBloc,
+    @required this.askBloc,
   }) : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<AskForm> createState() => _AskFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _AskFormState extends State<AskForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  LoginBloc get _loginBloc => widget.loginBloc;
+  AskBloc get _askBloc => widget.askBloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginEvent, LoginState>(
-      bloc: _loginBloc,
+    return BlocBuilder<AskEvent, AskState>(
+      bloc: _askBloc,
       builder: (
         BuildContext context,
-        LoginState state,
+        AskState state,
       ) {
         if (state is LoginFailure) {
           _onWidgetDidBuild(() {
@@ -83,9 +75,9 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   _onLoginButtonPressed() {
-    User user = User(userName: _usernameController.text, password: _passwordController.text);
     _loginBloc.dispatch(LoginButtonPressed(
-      user: user,
+      username: _usernameController.text,
+      password: _passwordController.text,
     ));
   }
 

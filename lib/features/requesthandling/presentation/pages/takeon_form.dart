@@ -2,36 +2,31 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
-import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
-import 'package:help_giver/features/userhandling/presentation/bloc/register_bloc.dart';
-import 'package:help_giver/features/userhandling/domain/entities/register_entity.dart';
-import 'package:help_giver/features/userhandling/domain/usecases/register_usecase.dart';
-import 'package:help_giver/features/userhandling/domain/entities/user.dart';
+import 'package:help_giver/features/requesthandling/presentation/bloc/request_bloc.dart';
+import 'package:help_giver/features/requesthandling/domain/usecases/authentication_usecase.dart';
+import 'package:help_giver/features/requesthandling/presentation/bloc/register_bloc.dart';
+import 'package:help_giver/features/requesthandling/domain/entities/register_entity.dart';
+import 'package:help_giver/features/requesthandling/domain/usecases/register_usecase.dart';
 
-class RegisterForm extends StatefulWidget {
-  final RegisterBloc registerBloc;
-  final AuthenticationBloc authenticationBloc; 
+class TakeonForm extends StatefulWidget {
+  final RequestBloc requestBloc;
 
-  RegisterForm({
+  TakeonForm({
     Key key,
-    @required this.registerBloc,
-    @required this.authenticationBloc,
+    @required this.requestBloc,
   }) : super(key: key);
 
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  State<TakeonForm> createState() => _TakeonFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _TakeonFormState extends State<TakeonForm> {
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _mobileController = TextEditingController();
-  final _addressController = TextEditingController();
 
-  RegisterBloc get _registerBloc => widget.registerBloc;
-  AuthenticationBloc get _authenticationBloc => widget.authenticationBloc;
+  RequestBloc get _requestBloc => widget.requestBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +64,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 controller: _mobileController,
                 obscureText: true,
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'address'),
-                controller: _addressController,
-                obscureText: true,
-              ),
               RaisedButton(
                 onPressed:
                     state is! RegisterLoading ? _onRegisterButtonPressed : null,
@@ -103,12 +93,10 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   _onRegisterButtonPressed() {
-    User user = User(userName: _usernameController.text, 
-                    password: _passwordController.text,
-                    address: _addressController.text,
-                    mobileNumber: _mobileController.text);
     _registerBloc.dispatch(RegisterButtonPressed(
-      user: user,
+      username: _usernameController.text,
+      password: _passwordController.text,
+      mobileNumber: _mobileController.text,
     ));
   }
 }

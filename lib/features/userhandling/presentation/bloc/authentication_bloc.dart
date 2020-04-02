@@ -46,5 +46,9 @@ class AuthenticationBloc
     if (event is Register) {
       yield AuthenticationStartRegistration();
     }
+
+    if (event is Registered) {
+      yield AuthenticationUnauthenticated();
+    }
   }
 }

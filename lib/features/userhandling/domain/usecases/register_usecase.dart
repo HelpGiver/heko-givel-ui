@@ -1,25 +1,22 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:help_giver/features/userhandling/domain/entities/user.dart';
 
 abstract class RegisterEvent extends Equatable {
    RegisterEvent();
 }
 
 class RegisterButtonPressed extends RegisterEvent {
-  final String username;
-  final String password;
-  final String mobileNumber;
+  final User user;
 
    RegisterButtonPressed({
-    @required this.username,
-    @required this.password,
-    @required this.mobileNumber,
+    @required this.user,
   });
 
   @override
-  List<Object> get props => [username, password, mobileNumber];
+  List<Object> get props => [user];
 
   @override
   String toString() =>
-      'LoginButtonPressed { username: $username, password: $password , mobile: $mobileNumber}';
+      'LoginButtonPressed { user: $user}';
 }
