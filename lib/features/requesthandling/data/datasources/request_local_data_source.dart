@@ -23,23 +23,23 @@ abstract class RequestLocalSource {
 }
 
 class RequestLocalDataSourceImpl implements RequestLocalSource {
-  final SharedPreferences sharedPreferences;
+  //final SharedPreferences sharedPreferences;
 
-  RequestLocalDataSourceImpl({@required this.sharedPreferences});
+  //RequestLocalDataSourceImpl({@required this.sharedPreferences});
 
   @override
   Future<RequestModel> askRequest(Request request) {
-    final jsonString = sharedPreferences.getString("");
-    if (jsonString != null) {
-      return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
-    } else
-      throw CacheException();
+    //final jsonString = sharedPreferences.getString("");
+    // if (jsonString != null) {
+    //   return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
+    // } else
+    //   throw CacheException();
   }
 
   
   @override
   Future<RequestModel> listAllRequests(String userId) {
-    final jsonString = sharedPreferences.getString("");
+    final jsonString = "";//sharedPreferences.getString("");
     if (jsonString != null) {
       return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
     } else
@@ -49,7 +49,7 @@ class RequestLocalDataSourceImpl implements RequestLocalSource {
   
   @override
   Future<RequestModel> listRequests(String userId, String status) {
-    final jsonString = sharedPreferences.getString("");
+    final jsonString = "";//sharedPreferences.getString("");
     if (jsonString != null) {
       return Future.value(null);//RequestModel.fromJson(json.decode(jsonString)));
     } else

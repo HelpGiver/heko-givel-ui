@@ -1,4 +1,4 @@
-
+import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RequestState extends Equatable {
@@ -6,12 +6,24 @@ abstract class RequestState extends Equatable {
   List<Object> get props => [];
 }
 
-class NoRequests extends RequestState {}
+class NoRequestState extends RequestState {}
 
-class AllRequests extends RequestState {}
+class AllRequestState extends RequestState {}
 
-class MyRequests extends RequestState {}
+class MyRequestState extends RequestState {}
 
-class MakeRequest extends RequestState {}
+class MakeRequestState extends RequestState {}
 
 class RequestLoading extends RequestState {}
+
+class RequestFailure extends RequestState {
+  final String error;
+
+   RequestFailure({@required this.error});
+
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() => 'RequestFailure { error: $error }';
+}

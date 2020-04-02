@@ -1,3 +1,4 @@
+import 'package:help_giver/features/userhandling/domain/entities/user.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,8 +12,12 @@ class NoRequests extends RequestEvent {
 }
 
 class AllRequests extends RequestEvent {
-  @override
-  String toString() => 'AllRequests';
+   final User user;
+    
+    AllRequests(this.user);
+  
+    @override
+    String toString() => 'AllRequests';
 }
 
 class MyRequests extends RequestEvent {

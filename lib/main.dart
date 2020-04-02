@@ -9,15 +9,20 @@ import 'package:help_giver/features/userhandling/presentation/pages/login_page.d
 import 'package:help_giver/features/userhandling/presentation/pages/register_page.dart';
 
 import 'package:help_giver/features/userhandling/data/repositories/userhandling_repo.dart';
-
+import 'package:help_giver/features/requesthandling/data/repositories/requesthandling_repo.dart';
 import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
 import 'package:help_giver/features/userhandling/presentation/widgets/loading_indicator.dart';
 
 import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
 import 'package:help_giver/features/userhandling/domain/entities/authentication_entity.dart';
 
-import 'package:help_giver/features/requesthandling/domain/irepositories/requesthandling_repo.dart';
-
+import 'features/requesthandling/presentation/bloc/request_bloc.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'core/network/network_info.dart';
+import 'features/requesthandling/data/datasources/request_local_data_source.dart';
+import 'features/requesthandling/data/datasources/request_remote_data_source.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -27,14 +32,23 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
+  //final sharedPreference = Future<void> () async {await SharedPreferences.getInstance()};
+
+  RequestRepository r = RequestRepository(
+    remoteDataSource: RequestRemoteDataSourceImp(client: http.Client()),
+    localDataSource: RequestLocalDataSourceImpl(),
+    networkInfo: NetworkInfoImp(DataConnectionChecker()),
+  );
+
   BlocSupervisor().delegate = SimpleBlocDelegate();
-  runApp(App(userRepository: UserRepository()));
+  runApp(App(userRepository: UserRepository(), requestRepository: r));
 }
 
 class App extends StatefulWidget {
   final UserRepository userRepository;
+  final RequestRepository requestRepository;
 
-  App({Key key, @required this.userRepository}) : super(key: key);
+  App({Key key, @required this.userRepository, @required this.requestRepository}) : super(key: key);
 
   @override
   State<App> createState() => _AppState();
@@ -42,12 +56,15 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   AuthenticationBloc authenticationBloc;
+  RequestBloc requestBloc;
   UserRepository get userRepository => widget.userRepository;
+  RequestRepository get requestRepository => widget.requestRepository;
 
   @override
   void initState() {
     authenticationBloc = AuthenticationBloc(userRepository: userRepository);
     authenticationBloc.dispatch(AppStarted());
+    requestBloc = RequestBloc(userRepository: userRepository, requestRepository: requestRepository);
     super.initState();
   }
 
@@ -69,7 +86,7 @@ class _AppState extends State<App> {
               return SplashPage();
             }
             if (state is AuthenticationAuthenticated) {
-              return HomePage(requestRepository: RequestRepository());
+              return HomePage(requestBloc: requestBloc);
             }
             if (state is AuthenticationUnauthenticated) {
               return LoginPage(userRepository: userRepository);

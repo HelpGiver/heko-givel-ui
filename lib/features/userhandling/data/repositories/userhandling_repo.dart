@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:help_giver/features/userhandling/domain/entities/user.dart';
 
 class UserRepository {
+  User user1;
   String username1;
 
   Future<String> authenticate({
@@ -11,6 +12,7 @@ class UserRepository {
     await Future.delayed(Duration(seconds: 1));
     if (user.userName != "richard" && user.password != "1") {
       username1 = user.userName;
+      user1 = user;
       throw 'Error login';
     } else {
       return 'token';

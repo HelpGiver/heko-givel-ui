@@ -4,18 +4,15 @@ import 'package:meta/meta.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/request.dart';
-import '../../domain/irepositories/requesthandling_repo.dart';
 import '../datasources/request_local_data_source.dart';
 import '../datasources/request_remote_data_source.dart';
 
-typedef Future<Request> _ConcreteOrRandomChooser();
-
-class RequestRepositoryImplementation implements RequestRepository {
+class RequestRepository {
   final RequestRemoteDataSource remoteDataSource;
   final RequestLocalSource localDataSource;
   final NetworkInfo networkInfo;
 
-  RequestRepositoryImplementation(
+  RequestRepository(
       {@required this.remoteDataSource,
       @required this.localDataSource,
       @required this.networkInfo});

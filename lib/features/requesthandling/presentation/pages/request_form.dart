@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:help_giver/features/requesthandling/presentation/bloc/request_bloc.dart';
 import 'package:help_giver/features/requesthandling/presentation/pages/select_page.dart';
+import 'package:help_giver/features/requesthandling/presentation/pages/allrequests_page.dart';
 import 'package:help_giver/features/requesthandling/domain/usecases/request_usecase.dart';
 import 'package:help_giver/features/requesthandling/domain/entities/request_state.dart';
-
+import 'package:help_giver/features/userhandling/presentation/widgets/loading_indicator.dart';
 
 class RequestForm extends StatefulWidget {
   final RequestBloc requestBloc;
@@ -38,18 +39,18 @@ class _RequestState extends State<RequestForm> {
         home: BlocBuilder<RequestEvent, RequestState>(
           bloc: _requestBloc,
           builder: (BuildContext context, RequestState state) {
-            if (state is NoRequests) {
+            if (state is NoRequestState) {
               return SelectPage();
             }
             if (state is AllRequests) {
               return AllRequestsPage();
             }
-            if (state is MyRequests) {
-              return MyRequestsPage();
-            }
-            if (state is MakeRequest) {
-              return MakeRequestPage();
-            }
+            // if (state is MyRequests) {
+            //   return SelectPage(); //MyRequestsPage();
+            // }
+            // if (state is MakeRequest) {
+            //   return SelectPage();// MakeRequestPage();
+            // }
             if (state is RequestLoading) {
               return LoadingIndicator();
             }
