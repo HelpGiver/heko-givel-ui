@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:help_giver/features/requesthandling/domain/entities/request.dart';
 
 abstract class RequestState extends Equatable {
   @override
@@ -8,7 +9,17 @@ abstract class RequestState extends Equatable {
 
 class NoRequestState extends RequestState {}
 
-class AllRequestState extends RequestState {}
+class AllRequestState extends RequestState {
+  final List<Request> requestList;
+
+   AllRequestState({@required this.requestList});
+
+  @override
+  List<Object> get props => [requestList];
+
+  @override
+  String toString() => 'AllRequestState { requestList: $requestList }';
+  }
 
 class MyRequestState extends RequestState {}
 

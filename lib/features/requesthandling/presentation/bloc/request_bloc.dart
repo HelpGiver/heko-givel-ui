@@ -10,6 +10,8 @@ import 'package:help_giver/features/requesthandling/domain/usecases/listall_usec
 import 'package:help_giver/features/requesthandling/domain/entities/request_state.dart';
 import 'package:help_giver/features/userhandling/data/repositories/userhandling_repo.dart';
 import 'package:help_giver/features/requesthandling/data/repositories/requesthandling_repo.dart';
+import 'package:help_giver/features/requesthandling/domain/entities/request.dart';
+
 
 const String SERVER_FAILURE_MESSAGE = 'Server failure';
 const String CACHE_FAILURE_MESSAGE = 'Cache failure';
@@ -40,7 +42,19 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
           print("hej");
           //ListAllRequest hej = ListAllRequest(requestRepository);
           //hej.call(userRepository.user1);
-          yield AllRequestState();
+          List<Request> _requestList =[
+              Request(id : 1 , requestName: "Groceries", 
+              requestDescription: '2 oranges',
+              currentStatus: "completed",
+                address: ' this is my address',
+                dateTime: DateTime.now().toString()),
+              Request(id : 2, requestName: "Transport", 
+              requestDescription: 'Book a to GP',
+              currentStatus: "requested",
+                address: ' this is my address',
+                dateTime: DateTime.now().toString()),
+            ];
+          yield AllRequestState(requestList: _requestList);
         } catch (error) {
           yield RequestFailure(error: error.toString());
         }

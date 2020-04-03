@@ -9,6 +9,9 @@ import 'package:help_giver/features/requesthandling/domain/usecases/request_usec
 import 'package:help_giver/features/requesthandling/domain/entities/request_state.dart';
 import 'package:help_giver/features/userhandling/presentation/widgets/loading_indicator.dart';
 
+import '../../domain/entities/request_state.dart';
+import '../bloc/request_bloc.dart';
+
 class RequestForm extends StatefulWidget {
   final RequestBloc requestBloc;
 
@@ -36,11 +39,15 @@ class _RequestFormState extends State<RequestForm> {
     return BlocBuilder<RequestEvent, RequestState>(
           bloc: _requestBloc,
           builder: (BuildContext context, RequestState state) {
+            print("RequestBlock state: ");
+            print(_requestBloc.state.toString());
             if (state is NoRequestState) {
               return SelectPage(requestBloc: _requestBloc);
             }
-            if (state is AllRequests) {
-              return AllRequestsPage(requestBloc: _requestBloc);
+            if (state is AllRequestState) {
+              print("tja");
+              print(state.toString());
+              return AllRequestsPage(requestBloc: _requestBloc, requestList: state.requestList);
             }
             // if (state is MyRequests) {
             //   return SelectPage(); //MyRequestsPage();
