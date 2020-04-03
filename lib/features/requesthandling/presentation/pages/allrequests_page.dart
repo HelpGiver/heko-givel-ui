@@ -6,10 +6,15 @@ import 'package:help_giver/features/requesthandling/presentation/bloc/request_bl
 import 'package:help_giver/features/requesthandling/domain/usecases/request_usecase.dart';
 
 class AllRequestsPage extends StatelessWidget {
+  final RequestBloc requestBloc;
+
+  AllRequestsPage({
+    Key key,
+    @required this.requestBloc,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final RequestBloc requestBloc =
-        BlocProvider.of<RequestBloc>(context);
 
     return Container(
         child: buildCenter(requestBloc),

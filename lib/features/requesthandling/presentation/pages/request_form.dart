@@ -18,10 +18,10 @@ class RequestForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RequestForm> createState() => _RequestState();
+  State<RequestForm> createState() => _RequestFormState();
 }
 
-class _RequestState extends State<RequestForm> {
+class _RequestFormState extends State<RequestForm> {
 
   RequestBloc get _requestBloc => widget.requestBloc;
 
@@ -33,17 +33,14 @@ class _RequestState extends State<RequestForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RequestBloc>(
-      bloc: _requestBloc,
-      child: MaterialApp(
-        home: BlocBuilder<RequestEvent, RequestState>(
+    return BlocBuilder<RequestEvent, RequestState>(
           bloc: _requestBloc,
           builder: (BuildContext context, RequestState state) {
             if (state is NoRequestState) {
-              return SelectPage();
+              return SelectPage(requestBloc: _requestBloc);
             }
             if (state is AllRequests) {
-              return AllRequestsPage();
+              return AllRequestsPage(requestBloc: _requestBloc);
             }
             // if (state is MyRequests) {
             //   return SelectPage(); //MyRequestsPage();
@@ -55,8 +52,6 @@ class _RequestState extends State<RequestForm> {
               return LoadingIndicator();
             }
           },
-        ),
-      ),
-    );
+        );
   }
 }

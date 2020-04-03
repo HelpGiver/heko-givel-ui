@@ -11,10 +11,11 @@ class UserRepository {
   }) async {
     await Future.delayed(Duration(seconds: 1));
     if (user.userName != "richard" && user.password != "1") {
-      username1 = user.userName;
-      user1 = user;
       throw 'Error login';
     } else {
+      username1 = user.userName;
+      user1 = user;
+      print("username1 = " + username1);
       return 'token';
     }
   }

@@ -7,28 +7,32 @@ import 'package:help_giver/features/requesthandling/presentation/bloc/request_bl
 import 'package:help_giver/features/requesthandling/domain/usecases/request_usecase.dart';
 
 class SelectPage extends StatelessWidget {
+  final RequestBloc requestBloc;
+
+  SelectPage({
+    Key key,
+    @required this.requestBloc,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authenticationBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
-    final RequestBloc requestBloc =
-        BlocProvider.of<RequestBloc>(context);
 
     return Container(
-        child: buildCenter(requestBloc, authenticationBloc),
+        child: buildCenter(requestBloc),
     );
   }
 
-  Center buildCenter(RequestBloc requestBloc, AuthenticationBloc authenticationBloc) {
+  Center buildCenter(RequestBloc requestBloc) {
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/help_giver_suggested_logo.png'),
             RaisedButton(
               child: Text('All requests'),
               onPressed: () {
-                requestBloc.dispatch(AllRequests(authenticationBloc.userRepository.user1));
+                print("hoj");
+                print(requestBloc.userRepository.username1);
+                requestBloc.dispatch(AllRequests(requestBloc.userRepository.user1));
               },
             ),
             // RaisedButton(

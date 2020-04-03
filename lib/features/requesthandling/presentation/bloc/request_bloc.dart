@@ -33,11 +33,13 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
     RequestEvent event,
   ) async* {
     if (event is AllRequests) {
+    print("hhhhhhhoooolss sd sada");
         yield RequestLoading();
 
         try {
-          ListAllRequest hej = ListAllRequest(requestRepository);
-          hej.call(userRepository.user1);
+          print("hej");
+          //ListAllRequest hej = ListAllRequest(requestRepository);
+          //hej.call(userRepository.user1);
           yield AllRequestState();
         } catch (error) {
           yield RequestFailure(error: error.toString());
