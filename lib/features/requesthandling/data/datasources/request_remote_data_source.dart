@@ -30,21 +30,16 @@ class RequestRemoteDataSourceImp implements RequestRemoteDataSource {
   }
 
   @override
-  Future<Request> listAllRequests(String userId) async {
-    return await _listRequests(userId, "all");
-  }
-
-    @override
   Future<Request> listRequests(String userId, String status) async {
-    return await _listRequests(userId, status);
+    //return null; await listRequests(userId, "all");
   }
 
-  Future<Request> _listRequests(String url, String status) async {
-    final response = await client.get('http://$url',
-        headers: {'Content-Type': 'application/json'});
+  Future<Request> listAllRequests(String userId) async {
+    final response = await http.get(
+        'http://localhost:8080/v1/user/5e8600a2433908443c6b2123/helpWantedRequests');
 
     if (response.statusCode == 200) {
-      return null;//RequestModel.fromJson(json.decode(response.body));
+      return RequestModel.fromJson(json.decode(response.body));
     } else
       throw ServerException();
   }

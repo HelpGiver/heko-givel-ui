@@ -35,7 +35,6 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
     RequestEvent event,
   ) async* {
     if (event is AllRequests) {
-    print("hhhhhhhoooolss sd sada");
         yield RequestLoading();
 
         try {
