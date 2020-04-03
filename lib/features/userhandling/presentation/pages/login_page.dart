@@ -10,7 +10,7 @@ import 'package:help_giver/features/userhandling/presentation/pages/login_form.d
 
 class LoginPage extends StatefulWidget {
   final UserRepository userRepository;
-
+static const routeName = '/loginPage';
   LoginPage({Key key, @required this.userRepository})
       : assert(userRepository != null),
         super(key: key);

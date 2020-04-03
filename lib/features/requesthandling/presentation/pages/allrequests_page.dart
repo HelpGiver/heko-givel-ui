@@ -32,6 +32,9 @@ class AllRequestsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 20,),
+            Image.asset('images/seeMyTasks.png'), 
+            Text(''),
             ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,

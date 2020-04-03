@@ -26,7 +26,14 @@ class SelectPage extends StatelessWidget {
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: <Widget>[          
+            Image.asset('images/makeARequest.png'),
+            Text(''),
+            SizedBox(height: 20,),
+            Image.asset('images/seeMyTasks.png'), 
+            Text(''),
+             SizedBox(height: 20,),
+            Image.asset('images/takeOnTasks.png'),
             RaisedButton(
               child: Text('All requests'),
               onPressed: () {

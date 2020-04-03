@@ -4,10 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:help_giver/features/requesthandling/presentation/pages/homepage.dart';
-import 'package:help_giver/features/userhandling/presentation/pages/Make.dart';
-import 'package:help_giver/features/userhandling/presentation/pages/intro_model.dart';
-import 'package:help_giver/features/userhandling/presentation/pages/profile.dart';
-import 'package:help_giver/features/userhandling/presentation/pages/see.dart';
 import 'package:help_giver/features/userhandling/presentation/pages/splash_page.dart';
 import 'package:help_giver/features/userhandling/presentation/pages/login_page.dart';
 import 'package:help_giver/features/userhandling/presentation/pages/register_page.dart';
@@ -15,7 +11,6 @@ import 'package:help_giver/features/userhandling/presentation/pages/register_pag
 import 'package:help_giver/features/userhandling/data/repositories/userhandling_repo.dart';
 import 'package:help_giver/features/requesthandling/data/repositories/requesthandling_repo.dart';
 import 'package:help_giver/features/userhandling/presentation/bloc/authentication_bloc.dart';
-import 'package:help_giver/features/userhandling/presentation/pages/take.dart';
 import 'package:help_giver/features/userhandling/presentation/widgets/loading_indicator.dart';
 
 import 'package:help_giver/features/userhandling/domain/usecases/authentication_usecase.dart';
@@ -84,20 +79,15 @@ class _AppState extends State<App> {
     return BlocProvider<AuthenticationBloc>(
       bloc: authenticationBloc,
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
             if (state is AuthenticationUninitialized) {
               return SplashPage();
             }
-            if (state is AuthenticationUnauthenticated) {
-              return Intro();
-            }
             if (state is AuthenticationAuthenticated) {
               return HomePage(requestBloc: requestBloc);
             }
-
             if (state is AuthenticationUnauthenticated) {
               return LoginPage(userRepository: userRepository);
             }
@@ -109,13 +99,6 @@ class _AppState extends State<App> {
             }
           },
         ),
-        routes: {
-          LoginPage.routeName: (ctx) => LoginPage(userRepository: userRepository),
-          Make.routeName: (ctx) => Make(),
-          Take.routeName: (ctx) => Take(),
-          See.routeName: (ctx) => See(),
-          Profile.routeName: (ctx) => Profile(),
-        },
       ),
     );
   }
